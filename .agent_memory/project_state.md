@@ -11,3 +11,4 @@
 - 2026-10-04: Enlarged and animated the header logo, added float motion to the footer logo, reduced the mobile menu CTA to a compact button, and kept Hero workflow markers on one mobile row. Verified the build with 0 diagnostics.
 - 2026-10-04: Added the owner-provided public email address to the centralized site contact configuration.
 - 2026-10-04: Added the owner-provided public Telegram URL to the centralized contact configuration and Telegram/Gmail inline icons to the contact actions and footer.
+- 2026-10-04: Reduced the mobile contact actions to compact controls and fixed Telegram/Gmail icon dimensions to prevent oversized SVG rendering.
