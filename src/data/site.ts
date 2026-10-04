@@ -3,7 +3,7 @@ export const site = {
   siteUrl: 'https://example.ru', // TODO: replace before production deployment
   ownerName: '', // TODO: add a real name when it is ready for publication
   telegramUrl: 'TELEGRAM_URL_HERE', // TODO: add a real Telegram URL
-  email: 'EMAIL_HERE', // TODO: add a real email address
+  email: 'makuninalexandr35@gmail.com',
   defaultDescription:
     'Создание современных сайтов, веб-сервисов, AI-решений и цифровых продуктов — от структуры и проектирования до запуска.',
   navigation: [

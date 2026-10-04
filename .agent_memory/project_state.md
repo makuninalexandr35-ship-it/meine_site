@@ -9,3 +9,4 @@
 - 2026-10-04: Refined mobile UI: higher-contrast hamburger, centered compact menu and section copy, enlarged logos, centered footer brand/navigation with year aligned right, removed the About oval, and animated the Process timeline markers and connectors. Verified the build with 0 diagnostics.
 - 2026-10-04: Reworked the mobile menu into a fully opaque independent overlay, improved header/footer contrast, reduced mobile navigation type, and added reduced-motion-safe ambient animation to action buttons, logos, and service icons. Verified the mobile menu visually and the build with 0 diagnostics.
 - 2026-10-04: Enlarged and animated the header logo, added float motion to the footer logo, reduced the mobile menu CTA to a compact button, and kept Hero workflow markers on one mobile row. Verified the build with 0 diagnostics.
+- 2026-10-04: Added the owner-provided public email address to the centralized site contact configuration.
