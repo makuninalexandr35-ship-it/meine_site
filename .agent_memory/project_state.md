@@ -16,3 +16,4 @@
 - 2026-10-04: Fixed mobile overflow in the hero and contact sections. The hero title, copy, actions, workflow markers and animated visual stay within the viewport; contact actions use equal compact dimensions and footer contact icons have fixed equal sizing.
 - 2026-10-04: Added Telegram and Email controls to the mobile menu, increased the contrast of secondary CTA buttons, and added the `/prices/` page plus navigation link. The pricing page is ready for owner-provided minimum budgets and does not publish invented amounts.
 - 2026-10-04: Removed Telegram and Email controls from the mobile menu at the owner's request and reduced the menu CTA slightly.
+- 2026-10-05: Rebuilt `/prices/` into a complete pricing page using centralized `src/data/pricing.ts`: 10 principal cards, compact additional-service prices, estimate explanation, cost factors, and contact CTAs. Verified desktop and mobile widths from 375px to 1440px with no horizontal overflow or console errors.

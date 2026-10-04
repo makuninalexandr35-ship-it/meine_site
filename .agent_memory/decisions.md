@@ -5,3 +5,4 @@
 - 2026-10-04: Kept the site static with Telegram and email links only; no form or personal-data storage is implemented. A future form must use a Russian-hosted endpoint and immediately delete received data after delivery.
 - 2026-10-04: Do not label unpublished portfolio items as real cases. Use neutral wording until the owner publishes verified materials.
 - 2026-10-04: Price ranges require owner approval. The public `/prices/` page may describe the format of work, but must not state a minimum budget until one is provided.
+- 2026-10-05: Public starting prices on `/prices/` follow the owner-provided source-of-truth table and always display the `от` qualifier. Supplementary work remains a compact list rather than large cards.
