@@ -9,6 +9,7 @@ export const site = {
   navigation: [
     { label: 'Проекты', href: '/#works', id: 'works' },
     { label: 'Услуги', href: '/#services', id: 'services' },
+    { label: 'Цены', href: '/prices/', id: 'prices' },
     { label: 'Обо мне', href: '/#about', id: 'about' },
     { label: 'Контакты', href: '/#contact', id: 'contact' },
   ],
