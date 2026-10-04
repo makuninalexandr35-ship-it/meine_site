@@ -4,8 +4,8 @@ import ProjectCard from './ProjectCard.astro';
 import SectionHeader from './SectionHeader.astro';
 ---
 <section class="section projects" id="works">
-  <div class="container"><SectionHeader eyebrow="ПОРТФОЛИО" title="Проекты" copy="Реальные продукты для бизнеса, стартапов и экспертов." />
-    {publishedProjects.length ? <div class="projects__grid">{publishedProjects.map((project) => <ProjectCard project={project} />)}</div> : <p class="projects__empty reveal">Реальные проекты появятся здесь после публикации материалов.</p>}
+  <div class="container"><SectionHeader eyebrow="ПОРТФОЛИО" title="Проекты" copy="Избранные проекты: сайты, веб-сервисы и AI-решения для разных бизнес-задач." />
+    {publishedProjects.length ? <div class="projects__grid">{publishedProjects.map((project) => <ProjectCard project={project} />)}</div> : <p class="projects__empty reveal">Проекты появятся здесь после публикации материалов.</p>}
   </div>
 </section>
 <style>.projects { background:linear-gradient(180deg,transparent,rgba(7,16,28,.48),transparent); }.projects__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:28px; margin-top:52px; }.projects__empty { margin:50px 0 0; padding:26px; border:1px solid var(--border); border-radius:var(--radius-sm); color:var(--text-secondary); background:rgba(9,19,33,.58); } @media(max-width:767px) { .projects__grid { grid-template-columns:1fr; gap:18px; margin-top:36px; } }</style>

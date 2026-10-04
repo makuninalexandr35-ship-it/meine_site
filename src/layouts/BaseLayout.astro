@@ -5,7 +5,7 @@ import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
 interface Props { title?: string; description?: string; canonicalPath?: string; image?: string; }
-const { title = `Сайты и цифровые продукты — ${site.siteName}`, description = site.defaultDescription, canonicalPath = '/', image = '/favicon.svg' } = Astro.props;
+const { title = 'Разработка сайтов, веб-сервисов и AI-решений', description = site.defaultDescription, canonicalPath = '/', image = '/favicon.svg' } = Astro.props;
 const canonical = new URL(canonicalPath, site.siteUrl).toString();
 const imageUrl = new URL(image, site.siteUrl).toString();
 ---

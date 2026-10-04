@@ -5,4 +5,4 @@ import { site } from '../data/site';
 interface Props { project: Project; }
 const { project } = Astro.props;
 ---
-<BaseLayout title={`${project.title} — ${site.siteName}`} description={project.shortDescription} canonicalPath={`/project/${project.slug}/`} image={project.cover}><slot /></BaseLayout>
+<BaseLayout title={site.siteName ? `${project.title} — ${site.siteName}` : project.title} description={project.shortDescription} canonicalPath={`/project/${project.slug}/`} image={project.cover}><slot /></BaseLayout>
