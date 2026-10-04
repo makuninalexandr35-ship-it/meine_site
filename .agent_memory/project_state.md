@@ -13,3 +13,4 @@
 - 2026-10-04: Added the owner-provided public Telegram URL to the centralized contact configuration and Telegram/Gmail inline icons to the contact actions and footer.
 - 2026-10-04: Reduced the mobile contact actions to compact controls and fixed Telegram/Gmail icon dimensions to prevent oversized SVG rendering.
 - 2026-10-04: Updated the portfolio copy for positioning around sites, web services, AI solutions and Telegram bots. Replaced hero, services, process, about, project and contact texts; kept the project area unpublished without fictional cases. Updated the SEO title and description, and removed the placeholder owner name from metadata.
+- 2026-10-04: Fixed mobile overflow in the hero and contact sections. The hero title, copy, actions, workflow markers and animated visual stay within the viewport; contact actions use equal compact dimensions and footer contact icons have fixed equal sizing.
