@@ -1,0 +1,27 @@
+:root {
+  --bg-main: #030711;
+  --bg-secondary: #07101c;
+  --surface: #091321;
+  --surface-hover: #0d192a;
+  --text-primary: #f4f7fb;
+  --text-secondary: #a1adbd;
+  --text-muted: #69788d;
+  --blue: #2e6bff;
+  --blue-bright: #28c7ff;
+  --red: #ff334d;
+  --red-bright: #ff4b5f;
+  --border: rgba(122, 157, 205, 0.15);
+  --hairline: rgba(255, 255, 255, 0.08);
+  --blue-glow: rgba(46, 107, 255, 0.3);
+  --red-glow: rgba(255, 51, 77, 0.25);
+  --container: min(100% - 96px, 1440px);
+  --header-height: 82px;
+  --radius-sm: 12px;
+  --radius-md: 20px;
+  --radius-lg: 30px;
+  --transition: 280ms cubic-bezier(.2,.8,.2,1);
+}
+
+@media (max-width: 767px) {
+  :root { --container: min(100% - 40px, 1440px); --header-height: 72px; }
+}

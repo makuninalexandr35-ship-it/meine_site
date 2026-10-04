@@ -1,0 +1,11 @@
+---
+import SectionHeader from './SectionHeader.astro';
+const services = [
+  ['Сайты', 'Лендинги, корпоративные сайты и сайты продуктов.', '⌁'],
+  ['Веб-приложения', 'Интерфейсы, личные кабинеты, сервисы и платформы.', '◫'],
+  ['AI-решения', 'AI-инструменты, интеграции и автоматизация задач.', '✦'],
+  ['Telegram-боты', 'Боты и цифровые сценарии для бизнеса и процессов.', '↗'],
+];
+---
+<section class="section services" id="services"><div class="container"><SectionHeader eyebrow="НАПРАВЛЕНИЯ" title="Что я создаю" /><div class="services__grid">{services.map(([title, copy, icon], index) => <article class="service reveal" style={`transition-delay:${index * 70}ms`}><span class="service__icon" aria-hidden="true">{icon}</span><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+<style>.services__grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:52px; }.service { min-height:244px; padding:25px; border:1px solid var(--border); border-radius:var(--radius-md); background:linear-gradient(145deg,rgba(13,25,42,.95),rgba(7,16,28,.8)); transition:border-color var(--transition),background var(--transition),opacity 700ms ease,transform 700ms ease; }.service:hover { border-color:rgba(46,107,255,.4); background:var(--surface-hover); }.service__icon { display:grid; width:42px; height:42px; place-items:center; border:1px solid rgba(40,199,255,.3); border-radius:12px; color:var(--blue-bright); font-size:21px; }.service:nth-child(even) .service__icon { border-color:rgba(255,51,77,.35); color:var(--red-bright); }.service h3 { margin:35px 0 9px; font-size:25px; line-height:1.1; letter-spacing:-.035em; }.service p { margin:0; color:var(--text-secondary); } @media(max-width:1050px) { .services__grid { grid-template-columns:repeat(2,1fr); } } @media(max-width:540px) { .services__grid { grid-template-columns:1fr; margin-top:36px; }.service { min-height:0; }.service h3 { margin-top:24px; } }</style>

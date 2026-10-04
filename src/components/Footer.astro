@@ -1,0 +1,8 @@
+---
+import Logo from '../assets/Logotip.webp';
+import { isConfiguredContact, site } from '../data/site';
+const isHome = Astro.url.pathname === '/';
+const navigation = site.navigation.map((item) => ({ ...item, href: isHome ? `#${item.id}` : item.href }));
+---
+<footer class="footer"><div class="footer__inner container"><a class="footer__logo" href={isHome ? '#top' : '/'} aria-label="На главную"><img src={Logo.src} width={Logo.width} height={Logo.height} alt="" /></a><nav aria-label="Навигация в подвале">{navigation.map((item) => <a href={item.href}>{item.label}</a>)}</nav><div class="footer__contacts">{isConfiguredContact(site.telegramUrl) && <a href={site.telegramUrl} target="_blank" rel="noopener noreferrer">Telegram</a>}{isConfiguredContact(site.email) && <a href={`mailto:${site.email}`}>Email</a>}</div><p>© {new Date().getFullYear()}</p></div></footer>
+<style>.footer { padding:35px 0; border-top:1px solid var(--hairline); }.footer__inner { display:flex; align-items:center; gap:24px; color:var(--text-muted); font-size:13px; }.footer__logo img { width:auto; height:32px; }.footer nav,.footer__contacts { display:flex; flex-wrap:wrap; gap:16px; }.footer nav { margin-left:auto; }.footer a:hover { color:var(--text-primary); }.footer p { margin:0 0 0 auto; } @media(max-width:767px) { .footer__inner { display:grid; grid-template-columns:1fr auto; }.footer nav { grid-column:1/-1; margin:0; }.footer__contacts { grid-column:1/-1; }.footer p { margin:0; } }</style>

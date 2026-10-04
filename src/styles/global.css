@@ -1,0 +1,22 @@
+@import './tokens.css';
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg-main); }
+body { margin: 0; min-width: 320px; overflow-x: hidden; background: var(--bg-main); color: var(--text-primary); font-family: Manrope, Inter, system-ui, sans-serif; font-size: 16px; line-height: 1.55; }
+body.menu-open { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+img { display: block; max-width: 100%; }
+h1,h2,h3,p { margin-top: 0; }
+h1,h2,h3 { font-family: 'Space Grotesk', Manrope, system-ui, sans-serif; }
+:focus-visible { outline: 3px solid var(--blue-bright); outline-offset: 4px; }
+.container { width: var(--container); margin-inline: auto; }
+.section { position: relative; padding-block: clamp(72px, 10vw, 150px); scroll-margin-top: calc(var(--header-height) + 20px); }
+.eyebrow { margin-bottom: 18px; color: var(--blue-bright); font-size: 12px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; }
+.section-heading { max-width: 750px; font-size: clamp(40px, 4vw, 68px); line-height: 1.03; letter-spacing: -.045em; }
+.section-copy { max-width: 610px; color: var(--text-secondary); font-size: 18px; }
+.gradient-text { background: linear-gradient(105deg, var(--red-bright), #e86a8b 42%, var(--blue-bright)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+@media (max-width: 767px) { .section-copy { font-size: 16px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } .reveal { opacity: 1; transform: none; } }
