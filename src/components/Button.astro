@@ -5,7 +5,7 @@ const classes = `button button--${variant} button--${size} ${className}`;
 ---
 {href ? <a class={classes} href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener noreferrer' : undefined}><slot /><span class="arrow" aria-hidden="true">→</span></a> : <button class={classes} type="button"><slot /><span class="arrow" aria-hidden="true">→</span></button>}
 <style>
-  .button { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:48px; padding:0 19px; border:1px solid transparent; border-radius:14px; font-weight:700; transition:transform var(--transition),box-shadow var(--transition),background var(--transition),border-color var(--transition); }
+  .button { display:inline-flex; align-items:center; justify-content:center; gap:10px; min-height:48px; padding:0 19px; border:1px solid transparent; border-radius:14px; font-weight:700; transition:transform var(--transition),box-shadow var(--transition),background var(--transition),border-color var(--transition); animation:button-breathe 4.6s ease-in-out infinite; }
   .button--lg { min-height:54px; padding-inline:24px; }
   .button--primary { background:linear-gradient(115deg,#d52d47,#ff4b5f 50%,#c53d79); box-shadow:0 12px 30px rgba(255,51,77,.2); }
   .button--secondary { border-color:var(--border); background:rgba(9,19,33,.7); color:var(--text-primary); }
@@ -14,6 +14,6 @@ const classes = `button button--${variant} button--${size} ${className}`;
   .button:active { transform:translateY(0) scale(.98); }
   .button--primary:hover { box-shadow:0 16px 36px rgba(255,51,77,.34),0 0 22px rgba(46,107,255,.16); }
   .button--secondary:hover { border-color:rgba(40,199,255,.55); background:rgba(46,107,255,.12); }
-  .button:hover .arrow { transform:translateX(4px); }
+  .button:hover .arrow { transform:translateX(4px); } @keyframes button-breathe { 50% { box-shadow:0 0 20px rgba(46,107,255,.2),0 0 13px rgba(255,51,77,.12); } }
   .arrow { font-size:1.2em; transition:transform var(--transition); }
 </style>
