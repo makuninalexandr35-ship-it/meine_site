@@ -6,3 +6,4 @@
 - 2026-10-04: Added `public/media/photos/` and `public/media/videos/` as the source folders for future user-provided media.
 - 2026-10-04: Verified `npm run build` with 0 Astro diagnostics; generated `dist/`, `robots.txt`, and sitemap files. Committed and pushed the source to `origin/main` as `70f6d16`.
 - 2026-10-04: Enlarged header and footer logos, set both surfaces to a subtly distinct navy for logo contrast, and added reduced-motion-safe ambient movement to the About brand visual. Verified the build with 0 diagnostics.
+- 2026-10-04: Refined mobile UI: higher-contrast hamburger, centered compact menu and section copy, enlarged logos, centered footer brand/navigation with year aligned right, removed the About oval, and animated the Process timeline markers and connectors. Verified the build with 0 diagnostics.

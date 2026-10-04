@@ -18,5 +18,5 @@ h1,h2,h3 { font-family: 'Space Grotesk', Manrope, system-ui, sans-serif; }
 .gradient-text { background: linear-gradient(105deg, var(--red-bright), #e86a8b 42%, var(--blue-bright)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms ease; }
 .reveal.is-visible { opacity: 1; transform: translateY(0); }
-@media (max-width: 767px) { .section-copy { font-size: 16px; } }
+@media (max-width: 767px) { .section-copy { font-size: 16px; } .section-header { text-align:center; } .section-header .section-copy { margin-inline:auto; } #about .about__content, #contact .contact__content { text-align:center; } #about .about__content .section-copy, #contact .contact__content > p:not(.eyebrow) { margin-inline:auto; } #about .about__chips { justify-content:center; } }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *,*::before,*::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; } .reveal { opacity: 1; transform: none; } }

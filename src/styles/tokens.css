@@ -15,7 +15,7 @@
   --blue-glow: rgba(46, 107, 255, 0.3);
   --red-glow: rgba(255, 51, 77, 0.25);
   --container: min(100% - 96px, 1440px);
-  --header-height: 98px;
+  --header-height: 116px;
   --radius-sm: 12px;
   --radius-md: 20px;
   --radius-lg: 30px;
@@ -23,5 +23,5 @@
 }
 
 @media (max-width: 767px) {
-  :root { --container: min(100% - 40px, 1440px); --header-height: 82px; }
+  :root { --container: min(100% - 40px, 1440px); --header-height: 100px; }
 }
