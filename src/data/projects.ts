@@ -16,7 +16,7 @@ export type Project = {
   result?: string;
   cover: string;
   coverAlt: string;
-  gallery?: { src: string; alt: string }[];
+  gallery?: { src: string; alt: string; compact?: boolean }[];
   video?: { src: string; title: string };
   liveUrl?: string;
   published: boolean;
@@ -46,9 +46,9 @@ export const projects: Project[] = [
       { src: '/media/photos/konditer-site/5-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской' },
       { src: '/media/photos/konditer-site/6-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской' },
       { src: '/media/photos/konditer-site/7-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской' },
-      { src: '/media/photos/konditer-site/8-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской' },
-      { src: '/media/photos/konditer-site/9-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской' },
-      { src: '/media/photos/konditer-site/10-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской' },
+      { src: '/media/photos/konditer-site/8-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской', compact: true },
+      { src: '/media/photos/konditer-site/9-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской', compact: true },
+      { src: '/media/photos/konditer-site/10-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта домашней кондитерской', compact: true },
     ],
     video: { src: '/media/videos/konditer-site-video.mp4', title: 'Видеообзор сайта домашней кондитерской' },
     published: true,
