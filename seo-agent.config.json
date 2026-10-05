@@ -10,6 +10,8 @@
     "BROKEN_INTERNAL_LINK_FIX": true,
     "INTERNAL_LINK_FIX": true,
     "INTERNAL_LINK_ADD": true,
-    "STRUCTURED_DATA_FIX_SAFE": true
+    "STRUCTURED_DATA_FIX_SAFE": true,
+    "H1_UPDATE": true,
+    "CONTENT_SECTION_ADD": true
   }
 }

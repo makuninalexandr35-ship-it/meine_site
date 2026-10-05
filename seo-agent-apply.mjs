@@ -7,6 +7,9 @@
 //   links_added { "<phrase>": "<url>" }          the first free occurrence of the phrase inside a paragraph becomes a link
 //                                               (never inside another link, a heading, a button or the navigation)
 //   schema    { JSON-LD object }                one <script type="application/ld+json" id="seo-agent-ld"> in <head>
+//   h1        "text"                            the TEXT of the page's one <h1> is replaced (a page with none or several is left alone)
+//   sections  { "<block id>": {items, where, anchor} }  a text block the owner wrote, as <section data-seo-agent-section="id"> before or after the first paragraph
+//                                               that holds the anchor words, or after the last paragraph of <main> (else <article>, else <body>)
 // Removing an entry from the file and rebuilding restores the page exactly. No dependencies; Node.js 18 or newer.
 //
 // Usage (after the build):  node seo-agent-apply.mjs dist            (Astro)
@@ -96,6 +99,77 @@ export function addLinks(html, links) {
   return tokens.join("");
 }
 
+// The text of the page's ONE <h1>; with none or several the page is left alone (the agent's own check then rolls the change back).
+export function replaceH1(html, text) {
+  const all = html.match(/<h1\b[^>]*>[\s\S]*?<\/h1>/gi);
+  if (!all || all.length !== 1) return html;
+  return html.replace(/(<h1\b[^>]*>)[\s\S]*?(<\/h1>)/i, (_m, open, close) => open + escHtml(text) + close);
+}
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+const clean = (s) => typeof s === "string" && s === s.replace(/\s+/g, " ").trim() && plain(s);
+const len = (s) => [...s].length;
+
+// The same rules as the agent's validator and the WordPress connector: plain text, single spaces, bounded sizes.
+export function sectionOk(block) {
+  if (!block || typeof block !== "object" || Array.isArray(block)) return false;
+  const keys = Object.keys(block).sort().join(",");
+  if (keys !== "anchor,items,where" && keys !== "items,where") return false;
+  if (!["end", "before", "after"].includes(block.where)) return false;
+  if (block.where === "end" && "anchor" in block) return false;
+  if (block.where !== "end" && !(clean(block.anchor) && len(block.anchor) >= 8 && len(block.anchor) <= 120)) return false;
+  if (!Array.isArray(block.items) || block.items.length < 1 || block.items.length > 8) return false;
+  let total = 0;
+  for (const item of block.items) {
+    if (!item || typeof item !== "object" || Object.keys(item).length !== 2 || !clean(item.h) || len(item.h) < 3 || len(item.h) > 120) return false;
+    total += len(item.h);
+    if (!Array.isArray(item.p) || item.p.length < 1 || item.p.length > 6) return false;
+    for (const p of item.p) {
+      if (!clean(p) || len(p) < 20 || len(p) > 1200) return false;
+      total += len(p);
+    }
+  }
+  return total <= 8000;
+}
+
+const textOf = (markup) => decode(markup.replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim();
+
+// Where a block goes: before or after the first paragraph that holds the anchor words, or after the last paragraph of the main content.
+export function sectionPosition(html, where, anchor) {
+  let start = 0, end = html.length;
+  for (const tag of ["main", "article", "body"]) {
+    const open = html.search(new RegExp(`<${tag}\\b`, "i"));
+    const close = html.toLowerCase().lastIndexOf(`</${tag}>`);
+    if (open >= 0 && close > open) { start = open; end = close; break; }
+  }
+  const region = html.slice(start, end);
+  const paragraphs = [...region.matchAll(/<p\b[^>]*>([\s\S]*?)<\/p>/gi)];
+  if (paragraphs.length === 0) return null;
+  if (where === "end") {
+    const last = paragraphs[paragraphs.length - 1];
+    return start + last.index + last[0].length;
+  }
+  const needle = String(anchor ?? "").replace(/\s+/g, " ").trim().toLowerCase();
+  for (const p of paragraphs) {
+    if (textOf(p[1]).toLowerCase().includes(needle)) return where === "before" ? start + p.index : start + p.index + p[0].length;
+  }
+  return null;
+}
+
+export function addSections(html, sections) {
+  let out = html;
+  for (const [id, block] of Object.entries(sections ?? {})) {
+    if (!UUID.test(id) || !sectionOk(block) || out.includes(`data-seo-agent-section="${id}"`)) continue;
+    let markup = `<section class="seo-agent-section" data-seo-agent-section="${id}">`;
+    for (const item of block.items) markup += `<h2>${escHtml(item.h)}</h2>` + item.p.map((p) => `<p>${escHtml(p)}</p>`).join("");
+    markup += "</section>";
+    const at = sectionPosition(out, block.where, block.anchor);
+    if (at === null) continue;
+    out = out.slice(0, at) + markup + out.slice(at);
+  }
+  return out;
+}
+
 export function renderOverrides(html, page) {
   if (typeof html !== "string" || !/<\/head>/i.test(html) || !page || typeof page !== "object") return html;
   let out = html;
@@ -116,6 +190,8 @@ export function renderOverrides(html, page) {
     out = replaceFirst(out, /<script\b[^>]*\bid=(["'])seo-agent-ld\1[^>]*>[\s\S]*?<\/script>/i, `<script type="application/ld+json" id="seo-agent-ld">${encodeJsonLd(page.schema)}</script>`);
   }
   if (page.links_added && typeof page.links_added === "object") out = addLinks(out, page.links_added);
+  if (typeof page.h1 === "string" && plain(page.h1) && page.h1.trim()) out = replaceH1(out, page.h1);
+  if (page.sections && typeof page.sections === "object") out = addSections(out, page.sections);
   if (page.links && typeof page.links === "object") {
     for (const [from, to] of Object.entries(page.links)) {
       if (!https(from) || !https(to)) continue;
