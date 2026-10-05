@@ -23,3 +23,4 @@
 - 2026-10-05: Made the confectionery gallery interactive: each of its nine screenshots opens in an accessible full-size lightbox. The published portfolio card now displays the cake cover image instead of obscuring it with a decorative overlay.
 - 2026-10-05: Owner approved publishing the "Ремонт квартир" case without a client name or live-site URL. It uses six owner-supplied screenshots and `remont-site-video.mp4`, with project facts and functionality supplied by the owner.
 - 2026-10-05: Owner approved the "Гастрономическая станция" (Plombir) case, including its public technical Beget address. The case uses nine supplied screenshots, `gastronom-site-video.mp4`, and the owner-provided facts about Astro/Node.js, 13 pages, CI publishing and SEO setup.
+- 2026-10-05: Owner approved the "Химчистка мебели" case. It uses six supplied screenshots and no video; the owner supplied the confirmed landing-page structure, UI direction, UX copy and lead-generation flow.
