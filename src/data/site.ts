@@ -1,11 +1,12 @@
 export const site = {
-  siteName: '',
+  siteName: 'Александр Макунин',
   siteUrl: 'https://aleksandrmakunin.ru',
-  ownerName: '', // TODO: add a real name when it is ready for publication
+  ownerName: 'Александр Макунин',
+  defaultTitle: 'Разработка сайтов и AI-решений — Александр Макунин',
   telegramUrl: 'https://t.me/Makunin68',
   email: 'makuninalexandr35@gmail.com',
   defaultDescription:
-    'Проектирую и разрабатываю сайты, веб-приложения, AI-решения и Telegram-ботов для бизнеса, стартапов и экспертов — от структуры до запуска.',
+    'Разрабатываю сайты, веб-сервисы, AI-решения и Telegram-ботов для бизнеса: от структуры и дизайна до запуска проекта.',
   navigation: [
     { label: 'Проекты', href: '/#works', id: 'works' },
     { label: 'Услуги', href: '/#services', id: 'services' },

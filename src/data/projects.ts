@@ -1,6 +1,8 @@
 export type Project = {
   slug: string;
   title: string;
+  seoTitle: string;
+  seoDescription: string;
   shortDescription: string;
   description: string;
   category: string;
@@ -25,6 +27,8 @@ export const projects: Project[] = [
   {
     slug: 'domashnyaya-konditerskaya',
     title: 'Домашняя кондитерская',
+    seoTitle: 'Сайт для домашней кондитерской — кейс разработки',
+    seoDescription: 'Кейс разработки сайта домашней кондитерской: каталог тортов, начинки, цены, SEO-страницы и заказ через MAX.',
     shortDescription: 'Сайт для заказа авторских тортов и десертов в Москве.',
     description: 'Разработал и запустил сайт домашней кондитерской для заказа авторских тортов и десертов.',
     category: 'Сайт услуг',
@@ -52,6 +56,8 @@ export const projects: Project[] = [
   {
     slug: 'remont-kvartir',
     title: 'Ремонт квартир',
+    seoTitle: 'Сайт ремонта квартир — кейс разработки',
+    seoDescription: 'Кейс разработки продающего сайта для услуг ремонта квартир под ключ: структура, адаптивная вёрстка и путь к заявке.',
     shortDescription: 'Одностраничный сайт для услуг ремонта квартир под ключ с понятным путём к заявке.',
     description: 'Создал современный продающий сайт для компании, которая занимается ремонтом квартир под ключ.',
     category: 'Сайт услуг',
@@ -76,6 +82,8 @@ export const projects: Project[] = [
   {
     slug: 'gastronomicheskaya-stanciya',
     title: 'Гастрономическая станция',
+    seoTitle: 'Сайт гастрономической станции — кейс разработки',
+    seoDescription: 'Кейс многостраничного сайта бренда гастрономических станций: 13 страниц, адаптивная версия, SEO и публикация на Beget.',
     shortDescription: 'Многостраничный сайт бренда Plombir для презентации гастрономических станций и приёма заявок.',
     description: 'Разработал и опубликовал многостраничный сайт бренда Plombir на Astro и Node.js.',
     category: 'Многостраничный сайт',
@@ -104,6 +112,8 @@ export const projects: Project[] = [
   {
     slug: 'himchistka-mebeli',
     title: 'Химчистка мебели',
+    seoTitle: 'Лендинг химчистки мебели — кейс разработки',
+    seoDescription: 'Кейс разработки продающего лендинга химчистки мебели: UX-структура, интерфейс, форма расчёта по фото и адаптивная вёрстка.',
     shortDescription: 'Продающий лендинг, который ведёт клиента от выбора мебели к расчёту стоимости по фотографии.',
     description: 'Разработал дизайн и вёрстку продающего лендинга для услуг химчистки мягкой мебели.',
     category: 'Лендинг услуг',
@@ -126,6 +136,8 @@ export const projects: Project[] = [
   {
     slug: 'project-slug',
     title: 'TODO: название проекта',
+    seoTitle: 'TODO: SEO-заголовок проекта',
+    seoDescription: 'TODO: SEO-описание проекта.',
     shortDescription: 'TODO: краткое описание проекта.',
     description: 'TODO: расскажите о проекте и его контексте.',
     category: 'TODO: категория',

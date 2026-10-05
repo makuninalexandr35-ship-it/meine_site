@@ -1,8 +1,14 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { Project } from '../data/projects';
-import { site } from '../data/site';
 interface Props { project: Project; }
 const { project } = Astro.props;
 ---
-<BaseLayout title={site.siteName ? `${project.title} — ${site.siteName}` : project.title} description={project.shortDescription} canonicalPath={`/project/${project.slug}/`} image={project.cover}><slot /></BaseLayout>
+<BaseLayout
+  title={project.seoTitle}
+  description={project.seoDescription}
+  canonicalPath={`/project/${project.slug}/`}
+  image={project.cover}
+  imageAlt={project.coverAlt}
+  ogType="article"
+><slot /></BaseLayout>

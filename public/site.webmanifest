@@ -1,0 +1,17 @@
+{
+  "name": "Александр Макунин — разработка сайтов и AI-решений",
+  "short_name": "Александр Макунин",
+  "lang": "ru",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07101c",
+  "theme_color": "#07101c",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

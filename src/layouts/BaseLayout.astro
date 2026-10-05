@@ -4,10 +4,27 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { site } from '../data/site';
 
-interface Props { title?: string; description?: string; canonicalPath?: string; image?: string; }
-const { title = 'Разработка сайтов, веб-сервисов и AI-решений', description = site.defaultDescription, canonicalPath = '/', image = '/favicon.svg' } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalPath?: string;
+  image?: string;
+  imageAlt?: string;
+  ogType?: 'website' | 'article';
+  noindex?: boolean;
+}
+const {
+  title = site.defaultTitle,
+  description = site.defaultDescription,
+  canonicalPath = '/',
+  image = '/Logotip.webp',
+  imageAlt = 'Александр Макунин — разработка сайтов и AI-решений',
+  ogType = 'website',
+  noindex = false,
+} = Astro.props;
 const canonical = new URL(canonicalPath, site.siteUrl).toString();
 const imageUrl = new URL(image, site.siteUrl).toString();
+const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
 ---
 <!doctype html>
 <html lang="ru">
@@ -15,16 +32,27 @@ const imageUrl = new URL(image, site.siteUrl).toString();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="googlebot" content={robots} />
+    <meta name="author" content={site.ownerName} />
+    <meta name="theme-color" content="#07101c" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <meta property="og:type" content="website" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content={site.siteName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:secure_url" content={imageUrl} />
+    <meta property="og:image:alt" content={imageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <meta name="twitter:image:alt" content={imageAlt} />
     <title>{title}</title>
   </head>
   <body>

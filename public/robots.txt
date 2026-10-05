@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://aleksandrmakunin.ru/sitemap-index.xml
+Host: aleksandrmakunin.ru
