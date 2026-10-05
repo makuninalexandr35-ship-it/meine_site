@@ -38,5 +38,5 @@ jobs:
           username: ${{ secrets.BEGET_FTP_USERNAME }}
           password: ${{ secrets.BEGET_FTP_PASSWORD }}
           local-dir: ./dist/
-          server-dir: /aleksandrmakunin.ru/public_html/
+          server-dir: /public_html/
           dangerous-clean-slate: false
