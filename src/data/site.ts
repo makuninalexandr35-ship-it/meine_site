@@ -1,6 +1,6 @@
 export const site = {
   siteName: '',
-  siteUrl: 'https://example.ru', // TODO: replace before production deployment
+  siteUrl: 'https://aleksandrmakunin.ru',
   ownerName: '', // TODO: add a real name when it is ready for publication
   telegramUrl: 'https://t.me/Makunin68',
   email: 'makuninalexandr35@gmail.com',
