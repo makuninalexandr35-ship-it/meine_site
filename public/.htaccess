@@ -3,3 +3,6 @@ Options -Indexes
 RewriteEngine On
 RewriteCond %{HTTPS} !=on
 RewriteRule ^ https://aleksandrmakunin.ru%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^www\.aleksandrmakunin\.ru$ [NC]
+RewriteRule ^ https://aleksandrmakunin.ru%{REQUEST_URI} [R=301,L]
