@@ -5,5 +5,9 @@ export default defineConfig({
   site: 'https://aleksandrmakunin.ru',
   output: 'static',
   trailingSlash: 'always',
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.endsWith('/prices/'),
+    }),
+  ],
 });

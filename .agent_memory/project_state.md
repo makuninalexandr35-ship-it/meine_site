@@ -34,3 +34,4 @@
 - 2026-10-05: Diagnosed the automatic deployment path mismatch. The dedicated FTP account is restricted to the production directory itself, so GitHub Actions must publish from the FTP root (`/`), rather than a nested `/aleksandrmakunin.ru/public_html/` or `/public_html/` path.
 - 2026-10-05: Applied the compact gallery layout to the final three vertical screenshots in the "Гастрономическая станция" case. They no longer stretch to full page width and still open in the full-size viewer.
 - 2026-10-05: Replaced the short "Обо мне" copy with the owner-provided professional biography, preserving its WordPress, technical SEO, Telegram bot, AI-agent and learning-positioning details.
+- 2026-10-09: Excluded `/prices/` from the automatically generated public sitemap at the owner's request. The page remains available to visitors and in the site navigation.
