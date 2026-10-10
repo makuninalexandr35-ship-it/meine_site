@@ -2,11 +2,12 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site } from '../data/site';
+import { isConfiguredContact, site } from '../data/site';
 
 interface Props {
   title?: string;
   description?: string;
+  crumbName?: string;
   canonicalPath?: string;
   image?: string;
   imageAlt?: string;
@@ -16,6 +17,7 @@ interface Props {
 const {
   title = site.defaultTitle,
   description = site.defaultDescription,
+  crumbName,
   canonicalPath = '/',
   image = '/Logotip.webp',
   imageAlt = 'Александр Макунин — разработка сайтов и AI-решений',
@@ -25,6 +27,28 @@ const {
 const canonical = new URL(canonicalPath, site.siteUrl).toString();
 const imageUrl = new URL(image, site.siteUrl).toString();
 const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+
+// Structured data (schema.org) built only from facts the site already states: its name and address, the page title, description and address, the owner's name and Telegram.
+const homeUrl = new URL('/', site.siteUrl).toString();
+const crumbs = canonicalPath === '/' ? [] : [{ name: 'Главная', url: homeUrl }, { name: crumbName ?? title, url: canonical }];
+const graph: Record<string, unknown>[] = [
+  { '@type': 'WebSite', '@id': `${homeUrl}#website`, url: homeUrl, name: site.siteName, inLanguage: 'ru-RU', ...(canonicalPath === '/' ? { publisher: { '@id': `${homeUrl}#person` } } : {}) },
+  {
+    '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: 'ru-RU',
+    isPartOf: { '@id': `${homeUrl}#website` },
+    ...(crumbs.length ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
+  },
+];
+if (crumbs.length) {
+  graph.push({
+    '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`,
+    itemListElement: crumbs.map((crumb, i) => ({ '@type': 'ListItem', position: i + 1, name: crumb.name, item: crumb.url })),
+  });
+}
+if (canonicalPath === '/') {
+  graph.push({ '@type': 'Person', '@id': `${homeUrl}#person`, name: site.ownerName, url: homeUrl, ...(isConfiguredContact(site.telegramUrl) ? { sameAs: [site.telegramUrl] } : {}) });
+}
+const jsonLd = noindex ? null : JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
 ---
 <!doctype html>
 <html lang="ru">
@@ -55,6 +79,7 @@ const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview
     <meta name="twitter:image" content={imageUrl} />
     <meta name="twitter:image:alt" content={imageAlt} />
     <title>{title}</title>
+    {jsonLd && <script type="application/ld+json" set:html={jsonLd} />}
     <!-- Yandex.Metrika counter -->
     <script is:inline type="text/javascript">
       (function(m,e,t,r,i,k,a){

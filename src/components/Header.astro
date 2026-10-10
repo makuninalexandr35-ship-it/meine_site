@@ -7,7 +7,7 @@ const navigation = site.navigation.map((item) => ({ ...item, href: isHome && ite
 ---
 <header class="header" data-header>
   <div class="header__inner container">
-    <a class="logo" href={logoHref} aria-label="На главную"><img src={Logo.src} width={Logo.width} height={Logo.height} alt="" /></a>
+    <a class="logo" href={logoHref} aria-label="На главную"><img src={Logo.src} width={Logo.width} height={Logo.height} alt={`Логотип: ${site.siteName}`} /></a>
     <nav class="desktop-nav" aria-label="Основная навигация">
       {navigation.map((item) => <a href={item.href} data-nav={item.id}>{item.label}</a>)}
     </nav>

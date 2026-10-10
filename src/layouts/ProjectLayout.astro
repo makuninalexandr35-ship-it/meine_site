@@ -7,6 +7,7 @@ const { project } = Astro.props;
 <BaseLayout
   title={project.seoTitle}
   description={project.seoDescription}
+  crumbName={project.title}
   canonicalPath={`/project/${project.slug}/`}
   image={project.cover}
   imageAlt={project.coverAlt}
