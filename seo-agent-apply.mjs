@@ -10,6 +10,8 @@
 //   h1        "text"                            the TEXT of the page's one <h1> is replaced (a page with none or several is left alone)
 //   sections  { "<block id>": {items, where, anchor} }  a text block the owner wrote, as <section data-seo-agent-section="id"> before or after the first paragraph
 //                                               that holds the anchor words, or after the last paragraph of <main> (else <article>, else <body>)
+//   noindex   true                              ADR-123, only on the owner's order: the page is closed from search (robots meta "noindex, nofollow", the googlebot and
+//                                               yandex metas too) and leaves the sitemap of the build; never on the home page
 // On the home page entry "/" only (ADR-112):
 //   robots    { "<line>": "present" | "absent" }  robots.txt of the build: "Sitemap: https://<this site>/..." and "Allow: /path" may be added or removed,
 //                                               "Disallow: /path" only removed (the agent never closes a page); nothing else is touched
@@ -174,6 +176,13 @@ export function addSections(html, sections) {
   return out;
 }
 
+// ADR-123: the page is closed from search: the general robots meta is set (inserted when missing), the robot-specific ones are set where the page has them.
+export function closeFromSearch(html) {
+  let out = replaceFirst(html, /<meta\s+name=(["'])robots\1[^>]*>/i, '<meta name="robots" content="noindex, nofollow" />');
+  out = out.replace(/<meta\s+name=(["'])(googlebot|yandex)\1[^>]*>/gi, (_m, _q, bot) => `<meta name="${bot.toLowerCase()}" content="noindex, nofollow" />`);
+  return out;
+}
+
 export function renderOverrides(html, page) {
   if (typeof html !== "string" || !/<\/head>/i.test(html) || !page || typeof page !== "object") return html;
   let out = html;
@@ -196,6 +205,7 @@ export function renderOverrides(html, page) {
   if (page.links_added && typeof page.links_added === "object") out = addLinks(out, page.links_added);
   if (typeof page.h1 === "string" && plain(page.h1) && page.h1.trim()) out = replaceH1(out, page.h1);
   if (page.sections && typeof page.sections === "object") out = addSections(out, page.sections);
+  if (page.noindex === true) out = closeFromSearch(out);
   if (page.links && typeof page.links === "object") {
     for (const [from, to] of Object.entries(page.links)) {
       if (!https(from) || !https(to)) continue;
@@ -372,9 +382,19 @@ export function siteHost(dir, configFile = "seo-agent.config.json") {
   }
 }
 
+// ADR-123: pages closed from search by the owner (noindex) leave the sitemap of the build.
+export function noindexSitemap(overrides, host) {
+  const out = {};
+  for (const [path, page] of Object.entries(overrides ?? {})) {
+    if (path !== "/" && /^\/[^\s"<>]*$/.test(path) && page && page.noindex === true) out[`https://${host}${path}`] = "absent";
+  }
+  return out;
+}
+
 export function applySiteFiles(dir, overrides, configFile = "seo-agent.config.json") {
-  const home = overrides?.["/"];
-  if (!home || (!home.robots && !home.sitemap)) return [];
+  const home = overrides?.["/"] ?? {};
+  const anyNoindex = Object.entries(overrides ?? {}).some(([path, page]) => path !== "/" && page && page.noindex === true);
+  if (!home.robots && !home.sitemap && !anyNoindex) return [];
   const host = siteHost(dir, configFile);
   if (!host) return ["skipped: the site's host is unknown"];
   const changes = [];
@@ -392,7 +412,8 @@ export function applySiteFiles(dir, overrides, configFile = "seo-agent.config.js
       changes.push("robots.txt");
     }
   }
-  if (home.sitemap && typeof home.sitemap === "object") changes.push(...applySitemap(dir, home.sitemap, host));
+  const sitemap = { ...(home.sitemap && typeof home.sitemap === "object" ? home.sitemap : {}), ...noindexSitemap(overrides, host) };
+  if (Object.keys(sitemap).length) changes.push(...applySitemap(dir, sitemap, host));
   return changes;
 }
 
