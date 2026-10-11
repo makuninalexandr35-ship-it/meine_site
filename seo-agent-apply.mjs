@@ -10,6 +10,10 @@
 //   h1        "text"                            the TEXT of the page's one <h1> is replaced (a page with none or several is left alone)
 //   sections  { "<block id>": {items, where, anchor} }  a text block the owner wrote, as <section data-seo-agent-section="id"> before or after the first paragraph
 //                                               that holds the anchor words, or after the last paragraph of <main> (else <article>, else <body>)
+// On the home page entry "/" only (ADR-112):
+//   robots    { "<line>": "present" | "absent" }  robots.txt of the build: "Sitemap: https://<this site>/..." and "Allow: /path" may be added or removed,
+//                                               "Disallow: /path" only removed (the agent never closes a page); nothing else is touched
+//   sitemap   { "<page url>": "listed" | "absent" } the sitemap files of the build: an address is added to the first sitemap or removed from all of them
 // Removing an entry from the file and rebuilding restores the page exactly. No dependencies; Node.js 18 or newer.
 //
 // Usage (after the build):  node seo-agent-apply.mjs dist            (Astro)
@@ -228,6 +232,170 @@ export function applyToDirectory(dir, overrides) {
   return changed;
 }
 
+// ADR-112: robots.txt and sitemap entries of the home page entry ("/"), applied to the files of the build.
+const ROBOTS_DIRECTIVES = { "user-agent": "User-agent", allow: "Allow", disallow: "Disallow", sitemap: "Sitemap", "crawl-delay": "Crawl-delay", "clean-param": "Clean-param", host: "Host" };
+
+// "disallow:/x " -> "Disallow: /x"; null for a comment, an empty or an unknown line (the agent writes lines in this form).
+export function normalizeRobotsLine(raw) {
+  const line = String(raw).replace(/#.*$/, "").trim();
+  const at = line.indexOf(":");
+  if (at <= 0) return null;
+  const name = ROBOTS_DIRECTIVES[line.slice(0, at).trim().toLowerCase()];
+  return name ? `${name}: ${line.slice(at + 1).trim()}` : null;
+}
+
+export function robotsLineOk(line, want, host) {
+  if (typeof line !== "string" || line.length > 300 || /[\r\n]/.test(line) || normalizeRobotsLine(line) !== line) return false;
+  if (want !== "present" && want !== "absent") return false;
+  const key = line.slice(0, line.indexOf(":")).toLowerCase();
+  const value = line.slice(line.indexOf(":") + 1).trim();
+  if (key === "sitemap") {
+    if (want === "absent") return true;
+    try {
+      const u = new URL(value);
+      return u.protocol === "https:" && u.hostname === host;
+    } catch (_) {
+      return false;
+    }
+  }
+  if (key === "allow") return value.startsWith("/");
+  if (key === "disallow") return want === "absent" && value.startsWith("/");
+  return false;
+}
+
+export function applyRobots(text, robots, host) {
+  const entries = Object.entries(robots ?? {}).filter(([line, want]) => robotsLineOk(line, want, host));
+  if (entries.length === 0) return text;
+  const absent = new Set(entries.filter(([, w]) => w === "absent").map(([l]) => l.toLowerCase()));
+  let lines = String(text ?? "").split(/\r?\n/).filter((raw) => {
+    const norm = normalizeRobotsLine(raw);
+    return !(norm && absent.has(norm.toLowerCase()));
+  });
+  const has = (line) => lines.some((raw) => (normalizeRobotsLine(raw) ?? "").toLowerCase() === line.toLowerCase());
+  for (const [line, want] of entries) {
+    if (want !== "present" || has(line)) continue;
+    if (/^Allow: /.test(line)) {
+      // an Allow rule belongs to the group of every robot
+      const at = lines.findIndex((raw) => (normalizeRobotsLine(raw) ?? "").toLowerCase() === "user-agent: *");
+      if (at >= 0) lines.splice(at + 1, 0, line);
+      else lines.push("", "User-agent: *", line);
+    } else {
+      while (lines.length > 0 && lines[lines.length - 1].trim() === "") lines.pop();
+      lines.push(line);
+    }
+  }
+  while (lines.length > 0 && lines[lines.length - 1].trim() === "") lines.pop();
+  while (lines.length > 0 && lines[0].trim() === "") lines.shift();
+  return lines.join("\n") + "\n";
+}
+
+// One page address for comparisons: host without www, lower-case path without the trailing slash, the query kept (as the agent compares).
+export function urlKey(url) {
+  try {
+    const u = new URL(url);
+    return `${u.hostname.toLowerCase().replace(/^www\./, "")}${u.pathname.replace(/\/+$/, "").toLowerCase()}${u.search}`;
+  } catch (_) {
+    return String(url).trim().toLowerCase();
+  }
+}
+
+const xmlDecode = (s) => String(s).replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+const xmlEncode = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+function xmlFiles(dir) {
+  const out = [];
+  for (const name of readdirSync(dir)) {
+    const full = join(dir, name);
+    if (statSync(full).isDirectory()) out.push(...xmlFiles(full));
+    else if (/\.xml$/i.test(name)) out.push(full);
+  }
+  return out.sort();
+}
+
+// Removes "absent" addresses from every sitemap of the build and adds "listed" ones that no sitemap lists to the first sitemap. Returns the changes.
+export function applySitemap(dir, sitemap, host) {
+  const wanted = Object.entries(sitemap ?? {}).filter(([url, want]) => {
+    if (want !== "listed" && want !== "absent") return false;
+    try {
+      const u = new URL(url);
+      return u.protocol === "https:" && u.hostname === host && !/[\s"<>]/.test(url);
+    } catch (_) {
+      return false;
+    }
+  });
+  if (wanted.length === 0) return [];
+  const files = xmlFiles(dir).map((file) => ({ file, xml: readFileSync(file, "utf8") })).filter((f) => /<urlset[\s>]/i.test(f.xml));
+  if (files.length === 0) return [];
+  const changes = [];
+  const absent = new Set(wanted.filter(([, w]) => w === "absent").map(([u]) => urlKey(u)));
+  for (const f of files) {
+    const next = f.xml.replace(/\s*<url>([\s\S]*?)<\/url>/gi, (block, inner) => {
+      const loc = /<loc>\s*(?:<!\[CDATA\[)?([^<\]]+)(?:\]\]>)?\s*<\/loc>/i.exec(inner);
+      if (loc && absent.has(urlKey(xmlDecode(loc[1].trim())))) {
+        changes.push(`removed ${xmlDecode(loc[1].trim())}`);
+        return "";
+      }
+      return block;
+    });
+    f.changed = next !== f.xml;
+    f.xml = next;
+  }
+  const listed = new Set(files.flatMap((f) => [...f.xml.matchAll(/<loc>\s*(?:<!\[CDATA\[)?([^<\]]+)(?:\]\]>)?\s*<\/loc>/gi)].map((m) => urlKey(xmlDecode(m[1].trim())))));
+  const first = files.find((f) => /sitemap-0\.xml$/i.test(f.file)) ?? files[0];
+  for (const [url, want] of wanted) {
+    if (want !== "listed" || listed.has(urlKey(url))) continue;
+    const at = first.xml.search(/<\/urlset>\s*$/i);
+    if (at < 0) continue;
+    first.xml = first.xml.slice(0, at) + `<url><loc>${xmlEncode(url)}</loc></url>` + first.xml.slice(at);
+    first.changed = true;
+    listed.add(urlKey(url));
+    changes.push(`added ${url}`);
+  }
+  for (const f of files) if (f.changed) writeFileSync(f.file, f.xml);
+  return changes;
+}
+
+// The site's own host: from seo-agent.config.json "site", else from the canonical of the built home page.
+export function siteHost(dir, configFile = "seo-agent.config.json") {
+  try {
+    const site = JSON.parse(readFileSync(configFile, "utf8")).site;
+    if (typeof site === "string") return new URL(site).hostname;
+  } catch (_) {
+    // no config or no site in it
+  }
+  try {
+    const home = readFileSync(join(dir, "index.html"), "utf8");
+    const href = /<link\b[^>]*rel=["']canonical["'][^>]*href=["']([^"']+)["']/i.exec(home)?.[1] ?? /<link\b[^>]*href=["']([^"']+)["'][^>]*rel=["']canonical["']/i.exec(home)?.[1];
+    return href ? new URL(href).hostname : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+export function applySiteFiles(dir, overrides, configFile = "seo-agent.config.json") {
+  const home = overrides?.["/"];
+  if (!home || (!home.robots && !home.sitemap)) return [];
+  const host = siteHost(dir, configFile);
+  if (!host) return ["skipped: the site's host is unknown"];
+  const changes = [];
+  if (home.robots && typeof home.robots === "object") {
+    const file = join(dir, "robots.txt");
+    let before = "";
+    try {
+      before = readFileSync(file, "utf8");
+    } catch (_) {
+      before = "";
+    }
+    const after = applyRobots(before, home.robots, host);
+    if (after !== before) {
+      writeFileSync(file, after);
+      changes.push("robots.txt");
+    }
+  }
+  if (home.sitemap && typeof home.sitemap === "object") changes.push(...applySitemap(dir, home.sitemap, host));
+  return changes;
+}
+
 if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
   const dir = process.argv[2];
   const file = process.argv[3] ?? "seo/overrides.json";
@@ -251,6 +419,9 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
   }
   const changed = applyToDirectory(dir, overrides);
   console.log(`seo-agent: overrides applied to ${changed.length} page(s)${changed.length ? ": " + changed.join(", ") : ""}`);
+  // robots.txt and the sitemap (ADR-112)
+  const files = applySiteFiles(dir, overrides);
+  if (files.length) console.log(`seo-agent: robots.txt / sitemap: ${files.join("; ")}`);
   // IndexNow: the key file lets Yandex trust the agent's notice that a page changed (ADR-064).
   const key = writeIndexNowKey(dir);
   if (key) console.log("seo-agent: IndexNow key file written");
