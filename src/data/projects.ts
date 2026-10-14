@@ -106,7 +106,6 @@ export const projects: Project[] = [
       { src: '/media/photos/gastro-site/10-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта гастрономической станции', compact: true },
     ],
     video: { src: '/media/videos/gastronom-site-video.mp4', title: 'Видеообзор сайта гастрономической станции' },
-    liveUrl: 'http://plombir.bar.makuni3u.beget.tech',
     published: true,
   },
   {
