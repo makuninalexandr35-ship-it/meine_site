@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
+import { site } from '../data/site';
 ---
-<BaseLayout title="Страница не найдена" description="Запрошенная страница не найдена." canonicalPath="/404.html" noindex><section class="not-found container"><p class="eyebrow">404</p><h1>Страница не найдена</h1><p>Возможно, ссылка устарела или адрес указан с ошибкой.</p><div><Button href="/">На главную</Button><Button href="/#works" variant="secondary">Смотреть проекты</Button><Button href="/#contact" variant="secondary">Обсудить проект</Button></div></section></BaseLayout>
+<BaseLayout title="Страница не найдена" description="Запрошенная страница не найдена." canonicalPath="/404.html" noindex><section class="not-found container"><p class="eyebrow">404</p><h1>Страница не найдена</h1><p>Возможно, ссылка устарела или адрес указан с ошибкой.</p><div><Button href="/">На главную</Button><Button href="/#works" variant="secondary">Смотреть проекты</Button><Button href={site.projectRequestUrl} variant="secondary">Обсудить проект</Button></div></section></BaseLayout>
 <style>.not-found { display:flex; min-height:100svh; flex-direction:column; justify-content:center; padding-top:var(--header-height); }.not-found h1 { margin-bottom:18px; font-size:clamp(48px,7vw,100px); line-height:.96; letter-spacing:-.06em; }.not-found > p:not(.eyebrow) { max-width:500px; color:var(--text-secondary); font-size:18px; }.not-found div { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }</style>

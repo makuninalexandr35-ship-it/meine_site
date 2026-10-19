@@ -4,6 +4,7 @@ export const site = {
   ownerName: 'Александр Макунин',
   defaultTitle: 'Разработка сайтов и AI-решений — Александр Макунин',
   telegramUrl: 'https://t.me/Makunin68',
+  projectRequestUrl: 'https://srm-test.aleksandrmakunin.ru/request/forma/?test=2aRzQEJgvj2E3EkMVcellEsR',
   email: 'makuninalexandr35@gmail.com',
   defaultDescription:
     'Разрабатываю сайты, веб-сервисы, AI-решения и Telegram-ботов для бизнеса: от структуры и дизайна до запуска проекта.',

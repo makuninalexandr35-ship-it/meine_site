@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Button from '../components/Button.astro';
 import { additionalServices, priceGroups } from '../data/pricing';
+import { site } from '../data/site';
 ---
 <BaseLayout
   title="Цены на разработку сайтов, SEO и AI-решения"
@@ -15,7 +16,7 @@ import { additionalServices, priceGroups } from '../data/pricing';
       <p class="eyebrow">УСЛУГИ И ЦЕНЫ</p>
       <h1>Стоимость <span class="gradient-text">разработки</span></h1>
       <p>Понятные стартовые цены без скрытых условий. Финальная стоимость зависит от сложности, объёма работ и необходимых интеграций.</p>
-      <Button href="/#contact" size="lg">Обсудить проект</Button>
+      <Button href={site.projectRequestUrl} size="lg">Обсудить проект</Button>
     </div>
   </section>
 
@@ -43,7 +44,7 @@ import { additionalServices, priceGroups } from '../data/pricing';
                 <ul>
                   {item.details.map((detail) => <li>{detail}</li>)}
                 </ul>
-                <a href="/#contact" aria-label={`Обсудить услугу: ${item.title}`}>Обсудить проект <span aria-hidden="true">→</span></a>
+                <a href={site.projectRequestUrl} aria-label={`Обсудить услугу: ${item.title}`}>Обсудить проект <span aria-hidden="true">→</span></a>
               </article>
             ))}
           </div>
@@ -99,7 +100,7 @@ import { additionalServices, priceGroups } from '../data/pricing';
         <h2 id="prices-cta-title">Не знаете, сколько будет стоить ваш проект?</h2>
         <p>Опишите задачу — я оценю объём работы и назову стоимость до начала разработки.</p>
       </div>
-      <Button href="/#contact" size="lg">Обсудить проект</Button>
+      <Button href={site.projectRequestUrl} size="lg">Обсудить проект</Button>
     </div>
   </section>
 </BaseLayout>

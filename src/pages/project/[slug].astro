@@ -2,6 +2,7 @@
 import ProjectLayout from '../../layouts/ProjectLayout.astro';
 import Button from '../../components/Button.astro';
 import { publishedProjects, type Project } from '../../data/projects';
+import { site } from '../../data/site';
 
 export function getStaticPaths() {
   return publishedProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
@@ -41,7 +42,7 @@ const details = [
       </dialog>
     </> : null}
     {project.video ? <section class="project-video" aria-labelledby="project-video-title"><p class="eyebrow">ВИДЕООБЗОР</p><h2 id="project-video-title">{project.video.title}</h2><video controls playsinline preload="metadata" poster={project.cover}><source src={project.video.src} type="video/mp4" />Ваш браузер не поддерживает видео.</video></section> : null}
-    <section class="case-study__cta"><p class="eyebrow">ПОХОЖАЯ ЗАДАЧА?</p><h2>Давайте обсудим проект.</h2><Button href="/#contact">Обсудить проект</Button></section>
+    <section class="case-study__cta"><p class="eyebrow">ПОХОЖАЯ ЗАДАЧА?</p><h2>Давайте обсудим проект.</h2><Button href={site.projectRequestUrl}>Обсудить проект</Button></section>
     {otherProjects.length > 0 ? <section class="other-projects" aria-labelledby="other-projects-title"><p class="eyebrow">ПОРТФОЛИО</p><h2 id="other-projects-title">Другие проекты</h2><ul class="other-projects__list">{otherProjects.map((item) => <li><a href={`/project/${item.slug}/`}><span class="other-projects__category">{item.category}</span><strong>{item.title}</strong><span class="other-projects__text">{item.shortDescription}</span></a></li>)}</ul></section> : null}
     {nextProject ? <a class="next-project" href={`/project/${nextProject.slug}/`}><span>Следующий проект</span><strong>{nextProject.title}</strong><b aria-hidden="true">→</b></a> : <a class="next-project" href="/#works"><span>ПОРТФОЛИО</span><strong>Вернуться ко всем проектам</strong><b aria-hidden="true">→</b></a>}
   </article>
