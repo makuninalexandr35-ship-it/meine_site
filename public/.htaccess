@@ -5,6 +5,12 @@ Options -Indexes
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
   Header always set Strict-Transport-Security "max-age=31536000"
+
+  # HTML must be revalidated on every visit, so browsers do not show an old
+  # page after publication. Images, video, CSS and JavaScript retain normal caching.
+  <FilesMatch "\.(?:html?|xhtml)$">
+    Header always set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
 RewriteEngine On
