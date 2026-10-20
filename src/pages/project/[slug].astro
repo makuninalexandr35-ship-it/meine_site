@@ -5,14 +5,14 @@ import { publishedProjects, type Project } from '../../data/projects';
 import { site } from '../../data/site';
 
 export function getStaticPaths() {
-  return publishedProjects.map((project) => ({ params: { slug: project.slug }, props: { project } }));
+  return publishedProjects.filter((project) => !project.customPage).map((project) => ({ params: { slug: project.slug }, props: { project } }));
 }
 
 interface Props { project: Project; }
 const { project } = Astro.props;
 const index = publishedProjects.findIndex((item) => item.slug === project.slug);
 const nextProject = publishedProjects[index + 1];
-const otherProjects = publishedProjects.filter((item) => item.slug !== project.slug);
+const otherProjects = publishedProjects.filter((item) => item.slug !== project.slug).sort((a, b) => Number(Boolean(b.customPage)) - Number(Boolean(a.customPage))).slice(0, 3);
 const regularGallery = project.gallery?.filter((image) => !image.compact) ?? [];
 const compactGallery = project.gallery?.filter((image) => image.compact) ?? [];
 const details = [

@@ -1,0 +1,211 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Button from '../../../components/Button.astro';
+import { projects } from '../../../data/projects';
+import { site } from '../../../data/site';
+
+const project = projects.find((item) => item.slug === 'ai-seo-teacher');
+if (!project) throw new Error('AI SEO Teacher project data is missing');
+
+const canonicalPath = '/project/ai-seo-teacher/';
+const videoPagePath = '/project/ai-seo-teacher/video/';
+const canonical = new URL(canonicalPath, site.siteUrl).toString();
+const videoPageUrl = new URL(videoPagePath, site.siteUrl).toString();
+const imageUrl = new URL(project.cover, site.siteUrl).toString();
+const videoUrl = new URL(project.video!.src, site.siteUrl).toString();
+const personId = `${site.siteUrl}/#person`;
+const videoId = `${videoPageUrl}#video`;
+const gallery = [
+  { src: '/media/photos/internet-site/ai-seo-teacher-exams.webp', alt: 'Экзамены платформы AI SEO Teacher', width: 1600, height: 1920 },
+  { src: '/media/photos/internet-site/ai-seo-teacher-dashboard.webp', alt: 'Обзор программы AI SEO Teacher с графом знаний и прогрессом обучения', width: 1600, height: 1920 },
+  { src: '/media/photos/internet-site/ai-seo-teacher-learning-path.webp', alt: 'Персональная программа обучения в AI SEO Teacher', width: 1600, height: 1920 },
+  { src: '/media/photos/internet-site/ai-seo-teacher-lesson.webp', alt: 'Страница SEO-урока с объяснениями и проверкой знаний', width: 1600, height: 1920 },
+  { src: '/media/photos/internet-site/ai-seo-teacher-knowledge-map.webp', alt: 'Интерактивная карта учебных тем SEO, AEO и GEO', width: 1600, height: 1920 },
+  { src: '/media/photos/internet-site/ai-seo-teacher-practice.webp', alt: 'Практические задания в AI SEO Teacher', width: 1604, height: 1906 },
+];
+const accordions = [
+  {
+    title: 'Диагностика и персональное обучение',
+    paragraphs: [
+      'Быстрый тест на 15–20 вопросов или подробный на 30–45. Сервис отдельно оценивает SEO, AEO и GEO, определяет уровень от 0 до 10 и составляет программу с учётом целей и темпа обучения.',
+      'Непроверенные темы не получают нулевую оценку. Результаты и история программ сохраняются.',
+    ],
+  },
+  {
+    title: 'Уроки и карта знаний',
+    paragraphs: [
+      '236 подготовленных вручную уроков с примерами, объяснениями и проверками. К ним подобраны 347 русскоязычных видео.',
+      'Темы соединены 351 связью в интерактивном графе. Система показывает, что уже изучено и к чему переходить дальше.',
+      'Материалы основаны на официальной документации Google, Яндекса, Bing и OpenAI.',
+    ],
+  },
+  {
+    title: 'AI-преподаватель',
+    paragraphs: [
+      'Встроенный AI-преподаватель отвечает на вопросы, объясняет сложные темы простыми словами, приводит примеры и сравнивает подходы Google и Яндекса.',
+      'Он учитывает результаты диагностики и историю обучения. Предусмотрены защита чувствительных данных, лимиты запросов и возможность отключить AI-обработку.',
+    ],
+  },
+  {
+    title: 'Практика и экзамены',
+    paragraphs: [
+      '236 практических кейсов на учебных данных. Можно сохранять ответы, получать подсказки и разбирать ошибки с помощью ИИ.',
+      'Шесть уровневых экзаменов проверяют теорию, практику и критические ошибки. Прогресс показывает не только прочитанные уроки, но и подтверждённые знания.',
+    ],
+  },
+  {
+    title: 'Академия SEO-инструментов',
+    paragraphs: [
+      'Интерактивные учебные модули по 18 инструментам: Яндекс Вебмастер, Метрика, Wordstat, Google Search Console, Lighthouse, PageSpeed Insights, Screaming Frog, Топвизор, Keys.so и другим.',
+      'Отдельные материалы посвящены ChatGPT Search, AI-поиску Google и Алисе. Симуляторы используют учебные данные.',
+    ],
+  },
+  {
+    title: 'Анализ реальных сайтов',
+    paragraphs: [
+      'Сервис проверяет публичные страницы: HTTP-ответы, редиректы, Title, Description, заголовки, canonical, robots, микроразметку и Open Graph.',
+      'Яндекс Вебмастер, Метрику и Google Search Console можно подключать для чтения данных. Учебный журнал помогает фиксировать наблюдения, гипотезы и результаты проверок.',
+      'Сервис ничего не меняет на проверяемом сайте.',
+    ],
+  },
+  {
+    title: 'Технологии и безопасность',
+    paragraphs: [
+      'Next.js 16, React 19, TypeScript, PostgreSQL, Drizzle ORM, Zod, Better Auth и OpenAI API.',
+      'Реализованы 137 модульных и 32 интеграционных теста, E2E-проверки через Playwright и автоматическая проверка доступности через axe.',
+      'Для защиты данных используются шифрование токенов AES-256-GCM, ограничение запросов и резервное копирование. Развёртывание — Docker на VPS в Oracle Cloud.',
+    ],
+  },
+];
+const otherProjects = [
+  { title: 'Гастрономическая станция', text: 'Многостраничный сайт бренда Plombir.', href: '/project/gastronomicheskaya-stanciya/' },
+  { title: 'Домашняя кондитерская', text: 'Сайт для заказа авторских тортов и десертов.', href: '/project/domashnyaya-konditerskaya/' },
+  { title: 'Ремонт квартир', text: 'Сайт услуг ремонта квартир под ключ.', href: '/project/remont-kvartir/' },
+];
+const additionalSchema = [
+  {
+    '@type': 'CreativeWork', '@id': `${canonical}#project`, name: 'AI SEO Teacher',
+    description: 'Образовательный веб-сервис для обучения SEO, AEO и GEO с AI-преподавателем, практикой и картой знаний.',
+    creator: { '@id': personId }, url: canonical, image: { '@id': `${canonical}#image` }, inLanguage: 'ru',
+    about: ['SEO', 'AEO', 'GEO', 'образовательные веб-сервисы'],
+  },
+  { '@type': 'Person', '@id': personId, name: site.ownerName, url: site.siteUrl },
+  {
+    '@type': 'ImageObject', '@id': `${canonical}#image`, contentUrl: imageUrl,
+    url: imageUrl, width: 1920, height: 1080,
+    caption: project.coverAlt, inLanguage: 'ru',
+  },
+  {
+    '@type': 'VideoObject', '@id': videoId, name: 'Видеообзор AI SEO Teacher',
+    description: 'Короткий видеообзор интерфейса AI SEO Teacher: обучение, карта знаний и основные возможности платформы.',
+    thumbnailUrl: imageUrl, uploadDate: '2026-10-20', duration: 'PT2M22S', contentUrl: videoUrl, inLanguage: 'ru',
+  },
+];
+---
+<BaseLayout
+  title={project.seoTitle}
+  description={project.seoDescription}
+  crumbName="AI SEO Teacher"
+  canonicalPath={canonicalPath}
+  image={project.cover}
+  imageAlt={project.coverAlt}
+  ogType="website"
+  webPageSchema={{ mainEntity: { '@id': `${canonical}#project` }, primaryImageOfPage: { '@id': `${canonical}#image` } }}
+  additionalSchema={additionalSchema}
+>
+  <article class="teacher-case container">
+    <a class="back-link" href="/#works">← Все проекты</a>
+
+    <header class="teacher-case__hero">
+      <div class="teacher-case__hero-copy">
+        <p class="eyebrow">AI-ВЕБ-СЕРВИС · ОБРАЗОВАТЕЛЬНАЯ ПЛАТФОРМА</p>
+        <h1>AI SEO Teacher — веб-сервис для обучения SEO, AEO и GEO</h1>
+        <p>Создал образовательную платформу с AI-преподавателем, персональной программой и практическими заданиями. Сервис помогает изучать SEO с нуля, разбираться в AEO и GEO и отслеживать свой прогресс.</p>
+        <p class="case-status"><span>Статус:</span> Закрытое тестирование.</p>
+      </div>
+      <figure class="teacher-case__cover">
+        <img src={project.cover} alt={project.coverAlt} width="1920" height="1080" loading="eager" fetchpriority="high" />
+      </figure>
+    </header>
+
+    <section class="case-section case-section--two" aria-labelledby="about-title">
+      <div><p class="eyebrow">О ПРОЕКТЕ</p><h2 id="about-title">AI SEO Teacher</h2></div>
+      <div><p>AI SEO Teacher — русскоязычный веб-сервис для обучения поисковому продвижению. Он объединяет классическое SEO для Google и Яндекса, AEO — оптимизацию под ответы поисковых систем и GEO — работу с видимостью в генеративном поиске.</p><p>В основе платформы — 236 учебных тем, связанных в интерактивную карту знаний.</p></div>
+    </section>
+
+    <section class="case-section case-section--two" aria-labelledby="challenge-title">
+      <div><p class="eyebrow">ЗАДАЧА</p><h2 id="challenge-title">С чего начинается обучение</h2></div>
+      <div><p>Хотел создать сервис, в котором обучение SEO начинается не с первого урока для всех, а с оценки знаний конкретного человека.</p><p>Система должна определять пробелы, подбирать темы в правильной последовательности и помогать закреплять теорию на практике.</p></div>
+    </section>
+
+    <section class="case-section case-section--two" aria-labelledby="solution-title">
+      <div><p class="eyebrow">РЕШЕНИЕ</p><h2 id="solution-title">Веб-сервис с персональным маршрутом</h2></div>
+      <div><p>Разработал веб-сервис с диагностикой знаний, индивидуальными программами обучения, AI-преподавателем и интерактивной картой тем.</p><p>Добавил практические задания, экзамены, учебные симуляторы SEO-инструментов и анализ реальных сайтов. Отдельно проработал защиту данных, тестирование и стабильность системы.</p></div>
+    </section>
+
+    <section class="role-panel" aria-labelledby="role-title">
+      <p class="eyebrow">МОЯ РОЛЬ</p>
+      <h2 id="role-title">Идея, продукт и разработка с помощью AI-инструментов.</h2>
+      <p>Архитектура · UX/UI · Frontend · Backend · AI-интеграции · Тестирование · Развёртывание</p>
+    </section>
+
+    <section class="case-functionality" aria-labelledby="functionality-title">
+      <p class="eyebrow">ФУНКЦИОНАЛ</p>
+      <h2 id="functionality-title">Функционал AI SEO Teacher</h2>
+      <p class="case-functionality__intro">Внутри платформы собраны инструменты для обучения SEO-специалистов с нуля и развития уже имеющихся навыков.</p>
+      <div class="case-accordions">
+        {accordions.map((item, index) => <details class="case-accordion"><summary><span>0{index + 1}</span><h3>{item.title}</h3><b aria-hidden="true">+</b></summary><div class="case-accordion__content">{item.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</div></details>)}
+      </div>
+    </section>
+
+    <section class="case-section case-section--two" aria-labelledby="result-title">
+      <div><p class="eyebrow">РЕЗУЛЬТАТ</p><h2 id="result-title">Образовательный веб-сервис</h2></div>
+      <div><p>Создал образовательный веб-сервис с персональными программами, AI-преподавателем, практикой, экзаменами и собственными инструментами анализа.</p><p>Платформа адаптирована для компьютеров, планшетов и смартфонов. Поддерживает сохранение прогресса, историю обучения и работу с подключёнными SEO-сервисами.</p><p><strong>Сейчас AI SEO Teacher проходит закрытое тестирование. Публичной регистрации нет.</strong></p></div>
+    </section>
+
+    <section class="case-gallery" aria-labelledby="gallery-title">
+      <p class="eyebrow">ИНТЕРФЕЙС</p><h2 id="gallery-title">Галерея</h2>
+      <div class="case-gallery__grid">
+        {gallery.map((image) => <button class="case-gallery__item" type="button" data-gallery-image data-src={image.src} data-alt={image.alt} aria-label={`Открыть изображение: ${image.alt}`}><img src={image.src} alt={image.alt} width={image.width} height={image.height} loading="lazy" /></button>)}
+      </div>
+      <dialog class="gallery-lightbox" data-gallery-lightbox aria-label="Просмотр изображения"><button class="gallery-lightbox__close" type="button" data-gallery-close aria-label="Закрыть просмотр">×</button><img data-gallery-lightbox-image alt="" /></dialog>
+    </section>
+
+    <section class="case-video" aria-labelledby="video-title">
+      <p class="eyebrow">ВИДЕООБЗОР · 2 МИНУТЫ 22 СЕКУНДЫ</p>
+      <h2 id="video-title">Видеообзор AI SEO Teacher</h2>
+      <p>Короткий видеообзор интерфейса AI SEO Teacher: как устроены обучение, карта знаний и основные возможности платформы.</p>
+      <video controls playsinline preload="none" poster={project.cover} width="1918" height="922"><source src={project.video!.src} type="video/mp4" />Ваш браузер не поддерживает видео.</video>
+      <a class="video-page-link" href={videoPagePath}>Смотреть видеообзор на отдельной странице <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="case-cta" aria-labelledby="cta-title"><p class="eyebrow">ПОХОЖАЯ ЗАДАЧА?</p><h2 id="cta-title">Нужна разработка веб-сервиса или AI-приложения?</h2><p>Разрабатываю сайты, веб-сервисы и AI-решения под конкретные задачи. Если у вас есть идея образовательной платформы, личного кабинета или собственного приложения — давайте обсудим её реализацию.</p><Button href={site.projectRequestUrl}>Обсудить проект</Button></section>
+
+    <section class="other-projects" aria-labelledby="other-projects-title"><p class="eyebrow">ПОРТФОЛИО</p><h2 id="other-projects-title">Другие проекты</h2><ul>{otherProjects.map((item) => <li><a href={item.href}><strong>{item.title}</strong><span>{item.text}</span></a></li>)}</ul><a class="all-projects-link" href="/#works">Смотреть все проекты <span aria-hidden="true">→</span></a></section>
+  </article>
+</BaseLayout>
+
+<script>
+  const lightbox = document.querySelector<HTMLDialogElement>('[data-gallery-lightbox]');
+  const lightboxImage = document.querySelector<HTMLImageElement>('[data-gallery-lightbox-image]');
+  const closeButton = document.querySelector<HTMLButtonElement>('[data-gallery-close]');
+  document.querySelectorAll<HTMLButtonElement>('[data-gallery-image]').forEach((button) => button.addEventListener('click', () => {
+    if (!lightbox || !lightboxImage) return;
+    lightboxImage.src = button.dataset.src ?? '';
+    lightboxImage.alt = button.dataset.alt ?? '';
+    lightbox.showModal();
+  }));
+  closeButton?.addEventListener('click', () => lightbox?.close());
+  lightbox?.addEventListener('click', (event) => { if (event.target === lightbox) lightbox.close(); });
+</script>
+
+<style>
+  .teacher-case { padding-top:calc(var(--header-height) + 50px); padding-bottom:100px; }.back-link { display:inline-flex; min-height:44px; align-items:center; color:var(--text-secondary); font-weight:700; }.back-link:hover { color:var(--blue-bright); }
+  .teacher-case__hero { display:grid; grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr); gap:clamp(34px,6vw,92px); align-items:center; min-height:calc(100svh - var(--header-height) - 48px); padding-block:52px 75px; }.teacher-case__hero h1 { margin:0 0 22px; font-size:clamp(48px,5.4vw,88px); line-height:.98; letter-spacing:-.06em; }.teacher-case__hero-copy > p:not(.eyebrow) { max-width:630px; color:var(--text-secondary); font-size:clamp(17px,1.6vw,21px); }.case-status { margin-top:24px !important; color:var(--text-primary) !important; font-weight:700; }.case-status span { color:var(--blue-bright); }.teacher-case__cover { width:100%; margin:0; overflow:hidden; border:1px solid var(--border); border-radius:var(--radius-lg); background:#e9edef; box-shadow:0 24px 70px rgba(0,0,0,.34); }.teacher-case__cover img { width:100%; height:auto; aspect-ratio:16/9; object-fit:contain; }
+  .case-section { display:grid; grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr); gap:clamp(30px,8vw,150px); padding:clamp(54px,8vw,110px) 0; border-top:1px solid var(--border); }.case-section h2,.role-panel h2,.case-functionality h2,.case-gallery h2,.case-video h2,.case-cta h2,.other-projects h2 { margin:0; font-size:clamp(35px,4.4vw,64px); line-height:1; letter-spacing:-.055em; }.case-section > div:last-child { max-width:735px; }.case-section > div:last-child p,.case-video > p:not(.eyebrow),.case-cta > p:not(.eyebrow) { color:var(--text-secondary); font-size:clamp(17px,1.55vw,20px); }.role-panel { margin-block:20px; padding:clamp(36px,6vw,86px); border:1px solid rgba(40,199,255,.3); border-radius:var(--radius-lg); background:radial-gradient(circle at 90% 0,rgba(46,107,255,.25),transparent 35%),radial-gradient(circle at 0 100%,rgba(255,51,77,.15),transparent 35%),var(--surface); }.role-panel h2 { max-width:900px; }.role-panel > p:last-child { margin:28px 0 0; color:var(--text-secondary); font-size:clamp(17px,1.6vw,20px); }
+  .case-functionality,.case-gallery,.case-video { padding-top:clamp(76px,10vw,140px); }.case-functionality__intro { max-width:680px; color:var(--text-secondary); font-size:18px; }.case-accordions { display:grid; gap:10px; margin-top:40px; }.case-accordion { overflow:hidden; border:1px solid var(--border); border-radius:var(--radius-sm); background:var(--surface); }.case-accordion summary { display:grid; grid-template-columns:48px minmax(0,1fr) 30px; align-items:center; gap:18px; padding:23px 25px; cursor:pointer; list-style:none; }.case-accordion summary::-webkit-details-marker { display:none; }.case-accordion summary span { color:var(--blue-bright); font-size:12px; font-weight:800; letter-spacing:.12em; }.case-accordion h3 { margin:0; font-size:clamp(21px,2vw,28px); line-height:1.15; letter-spacing:-.04em; }.case-accordion summary b { color:var(--blue-bright); font-size:26px; font-weight:400; text-align:center; transition:transform var(--transition); }.case-accordion[open] summary { border-bottom:1px solid var(--border); background:rgba(46,107,255,.08); }.case-accordion[open] summary b { transform:rotate(45deg); }.case-accordion__content { max-width:820px; padding:4px 74px 26px; }.case-accordion__content p { margin:18px 0 0; color:var(--text-secondary); }.case-accordion__content p:last-child { margin-bottom:0; }
+  .case-gallery__grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin-top:38px; }.case-gallery__item { display:block; width:100%; padding:0; overflow:hidden; border:1px solid var(--border); border-radius:var(--radius-md); background:#edf1f1; cursor:zoom-in; }.case-gallery__item img { width:100%; height:auto; transition:transform var(--transition); }.case-gallery__item:hover img,.case-gallery__item:focus-visible img { transform:scale(1.018); }.case-gallery__item:focus-visible { outline:2px solid var(--blue-bright); outline-offset:4px; }.gallery-lightbox { width:min(94vw,1440px); max-width:none; max-height:90dvh; padding:42px 18px 18px; overflow:hidden; border:1px solid rgba(137,179,255,.42); border-radius:var(--radius-md); background:rgba(5,10,23,.96); box-shadow:0 30px 90px rgba(0,0,0,.62); }.gallery-lightbox::backdrop { background:rgba(0,0,0,.84); backdrop-filter:blur(8px); }.gallery-lightbox img { display:block; max-width:100%; max-height:calc(90dvh - 62px); margin:auto; object-fit:contain; }.gallery-lightbox__close { position:absolute; top:8px; right:10px; display:grid; width:34px; height:34px; place-items:center; border:1px solid var(--hairline); border-radius:50%; background:rgba(9,19,36,.9); color:var(--text-primary); font-size:26px; line-height:1; cursor:pointer; }
+  .case-video { max-width:1120px; }.case-video > p:not(.eyebrow) { max-width:700px; }.case-video video { display:block; width:100%; height:auto; margin-top:30px; border:1px solid var(--border); border-radius:var(--radius-md); background:#07101c; }.video-page-link,.all-projects-link { display:inline-flex; gap:11px; margin-top:23px; color:var(--blue-bright); font-weight:800; }.video-page-link:hover,.all-projects-link:hover { color:var(--text-primary); }.case-cta { max-width:980px; padding:clamp(85px,12vw,170px) 0 clamp(55px,8vw,95px); }.case-cta h2 { max-width:920px; }.case-cta > p:not(.eyebrow) { max-width:700px; }.case-cta :global(.button) { margin-top:16px; }.other-projects { padding-top:40px; border-top:1px solid var(--border); }.other-projects ul { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin:32px 0 0; padding:0; list-style:none; }.other-projects a:not(.all-projects-link) { display:flex; min-height:172px; flex-direction:column; gap:10px; padding:25px; border:1px solid var(--border); border-radius:var(--radius-md); background:var(--surface); transition:transform var(--transition),border-color var(--transition); }.other-projects a:not(.all-projects-link):hover,.other-projects a:not(.all-projects-link):focus-visible { transform:translateY(-3px); border-color:rgba(40,199,255,.52); }.other-projects strong { font-family:'Space Grotesk',sans-serif; font-size:clamp(22px,2vw,29px); line-height:1.1; letter-spacing:-.04em; }.other-projects li span { color:var(--text-secondary); }
+  @media(max-width:900px) { .teacher-case__hero,.case-section { grid-template-columns:1fr; }.teacher-case__hero { min-height:0; }.teacher-case__cover { max-width:820px; }.case-section { gap:22px; }.case-gallery__grid { grid-template-columns:repeat(2,minmax(0,1fr)); }.other-projects ul { grid-template-columns:1fr; } }
+  @media(max-width:767px) { .teacher-case { padding-top:calc(var(--header-height) + 28px); padding-bottom:70px; }.teacher-case__hero { gap:34px; padding-block:28px 55px; }.teacher-case__hero h1 { font-size:clamp(39px,11.5vw,56px); }.teacher-case__cover { border-radius:18px; }.case-section { padding-block:54px; }.case-accordion summary { grid-template-columns:35px minmax(0,1fr) 24px; gap:10px; padding:19px 16px; }.case-accordion__content { padding:1px 16px 22px; }.case-gallery__grid { grid-template-columns:1fr; gap:14px; }.gallery-lightbox { width:calc(100vw - 24px); }.case-video { padding-top:72px; }.case-cta { padding-top:90px; }.other-projects a:not(.all-projects-link) { min-height:0; }.case-video video { border-radius:14px; } }
+</style>

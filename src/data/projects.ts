@@ -19,6 +19,7 @@ export type Project = {
   gallery?: { src: string; alt: string; compact?: boolean }[];
   video?: { src: string; title: string };
   liveUrl?: string;
+  customPage?: boolean;
   published: boolean;
 };
 
@@ -130,6 +131,21 @@ export const projects: Project[] = [
       { src: '/media/photos/mebel=site/5-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта услуг химчистки мебели' },
       { src: '/media/photos/mebel=site/6-ezgif.com-png-to-webp-converter.webp', alt: 'Страница сайта услуг химчистки мебели' },
     ],
+    published: true,
+  },
+  {
+    slug: 'ai-seo-teacher',
+    title: 'AI SEO Teacher',
+    seoTitle: 'AI SEO Teacher — разработка веб-сервиса для обучения SEO, AEO и GEO',
+    seoDescription: 'Разработал AI SEO Teacher — веб-сервис для обучения SEO, AEO и GEO с AI-преподавателем, диагностикой знаний, 236 уроками, практикой и экзаменами. Кейс разработки.',
+    shortDescription: 'Платформа обучения SEO, AEO и GEO с AI-преподавателем, практикой и картой знаний.',
+    description: 'AI SEO Teacher — русскоязычный веб-сервис для обучения поисковому продвижению.',
+    category: 'AI-веб-сервис',
+    role: ['Идея', 'Продукт', 'Разработка с помощью AI-инструментов'],
+    cover: '/media/photos/internet-site/ai-seo-teacher-home.webp',
+    coverAlt: 'Главная страница веб-сервиса AI SEO Teacher для обучения SEO, AEO и GEO',
+    video: { src: '/media/videos/ai-seo-teacher-video.mp4', title: 'Видеообзор AI SEO Teacher' },
+    customPage: true,
     published: true,
   },
   {

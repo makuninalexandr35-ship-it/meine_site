@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { projects } from '../../../data/projects';
+import { site } from '../../../data/site';
+
+const project = projects.find((item) => item.slug === 'ai-seo-teacher');
+if (!project) throw new Error('AI SEO Teacher project data is missing');
+const canonicalPath = '/project/ai-seo-teacher/video/';
+const projectPath = '/project/ai-seo-teacher/';
+const canonical = new URL(canonicalPath, site.siteUrl).toString();
+const projectUrl = new URL(projectPath, site.siteUrl).toString();
+const imageUrl = new URL(project.cover, site.siteUrl).toString();
+const videoUrl = new URL(project.video!.src, site.siteUrl).toString();
+const videoId = `${canonical}#video`;
+const title = 'Видеообзор AI SEO Teacher — интерфейс образовательной платформы';
+const description = 'Видеообзор AI SEO Teacher: обучение SEO, AEO и GEO, карта знаний, персональная программа и AI-преподаватель. Продолжительность — 2 минуты 22 секунды.';
+---
+<BaseLayout
+  title={title}
+  description={description}
+  crumbName="Видеообзор AI SEO Teacher"
+  canonicalPath={canonicalPath}
+  image={project.cover}
+  imageAlt={project.coverAlt}
+  ogType="website"
+  yandexNoindex={true}
+  breadcrumbs={[{ name: 'Главная', url: site.siteUrl }, { name: 'AI SEO Teacher', url: projectUrl }, { name: 'Видеообзор', url: canonical }]}
+  webPageSchema={{ mainEntity: { '@id': videoId } }}
+  additionalSchema={[{ '@type': 'VideoObject', '@id': videoId, name: 'Видеообзор AI SEO Teacher', description: 'Короткий видеообзор интерфейса AI SEO Teacher: обучение, карта знаний и основные возможности платформы.', thumbnailUrl: imageUrl, uploadDate: '2026-10-20', duration: 'PT2M22S', contentUrl: videoUrl, inLanguage: 'ru' }]}
+>
+  <article class="video-case container">
+    <a class="back-link" href={projectPath}>← К проекту AI SEO Teacher</a>
+    <header><p class="eyebrow">ВИДЕООБЗОР · 2 МИНУТЫ 22 СЕКУНДЫ</p><h1>Видеообзор веб-сервиса AI SEO Teacher</h1><p>В коротком видео показываю интерфейс AI SEO Teacher — образовательной платформы с персональной программой, картой знаний и AI-преподавателем.</p></header>
+    <video controls playsinline preload="metadata" poster={project.cover} width="1918" height="922"><source src={project.video!.src} type="video/mp4" />Ваш браузер не поддерживает видео.</video>
+    <p class="video-case__status">AI SEO Teacher — мой проект, разработанный с помощью AI-инструментов. Сейчас сервис проходит закрытое тестирование.</p>
+    <a class="case-link" href={projectPath}>Читать полный кейс разработки AI SEO Teacher <span aria-hidden="true">→</span></a>
+  </article>
+</BaseLayout>
+
+<style>
+  .video-case { max-width:1240px; padding-top:calc(var(--header-height) + 60px); padding-bottom:110px; }.back-link { display:inline-flex; min-height:44px; align-items:center; color:var(--text-secondary); font-weight:700; }.back-link:hover,.case-link:hover { color:var(--blue-bright); }.video-case header { max-width:950px; padding:55px 0 42px; }.video-case h1 { margin:0 0 23px; font-size:clamp(48px,6vw,92px); line-height:.96; letter-spacing:-.06em; }.video-case header > p:not(.eyebrow),.video-case__status { max-width:760px; color:var(--text-secondary); font-size:clamp(17px,1.6vw,21px); }.video-case video { display:block; width:100%; height:auto; border:1px solid var(--border); border-radius:var(--radius-lg); background:#07101c; box-shadow:0 22px 62px rgba(0,0,0,.3); }.video-case__status { margin:30px 0 0; }.case-link { display:inline-flex; gap:11px; margin-top:10px; color:var(--blue-bright); font-weight:800; } @media(max-width:767px) { .video-case { padding-top:calc(var(--header-height) + 28px); padding-bottom:70px; }.video-case header { padding:30px 0; }.video-case h1 { font-size:clamp(40px,11vw,56px); }.video-case video { border-radius:16px; } }
+</style>

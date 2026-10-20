@@ -13,6 +13,10 @@ interface Props {
   imageAlt?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  yandexNoindex?: boolean;
+  breadcrumbs?: { name: string; url: string }[];
+  webPageSchema?: Record<string, unknown>;
+  additionalSchema?: Record<string, unknown>[];
 }
 const {
   title = site.defaultTitle,
@@ -23,6 +27,10 @@ const {
   imageAlt = 'Александр Макунин — разработка сайтов и AI-решений',
   ogType = 'website',
   noindex = false,
+  yandexNoindex = false,
+  breadcrumbs,
+  webPageSchema = {},
+  additionalSchema = [],
 } = Astro.props;
 const canonical = new URL(canonicalPath, site.siteUrl).toString();
 const imageUrl = new URL(image, site.siteUrl).toString();
@@ -30,13 +38,14 @@ const robots = noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview
 
 // Structured data (schema.org) built only from facts the site already states: its name and address, the page title, description and address, the owner's name and Telegram.
 const homeUrl = new URL('/', site.siteUrl).toString();
-const crumbs = canonicalPath === '/' ? [] : [{ name: 'Главная', url: homeUrl }, { name: crumbName ?? title, url: canonical }];
+const crumbs = breadcrumbs ?? (canonicalPath === '/' ? [] : [{ name: 'Главная', url: homeUrl }, { name: crumbName ?? title, url: canonical }]);
 const graph: Record<string, unknown>[] = [
   { '@type': 'WebSite', '@id': `${homeUrl}#website`, url: homeUrl, name: site.siteName, inLanguage: 'ru-RU', ...(canonicalPath === '/' ? { publisher: { '@id': `${homeUrl}#person` } } : {}) },
   {
     '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description, inLanguage: 'ru-RU',
     isPartOf: { '@id': `${homeUrl}#website` },
     ...(crumbs.length ? { breadcrumb: { '@id': `${canonical}#breadcrumb` } } : {}),
+    ...webPageSchema,
   },
 ];
 if (crumbs.length) {
@@ -48,6 +57,7 @@ if (crumbs.length) {
 if (canonicalPath === '/') {
   graph.push({ '@type': 'Person', '@id': `${homeUrl}#person`, name: site.ownerName, url: homeUrl, ...(isConfiguredContact(site.telegramUrl) ? { sameAs: [site.telegramUrl] } : {}) });
 }
+graph.push(...additionalSchema);
 const jsonLd = noindex ? null : JSON.stringify({ '@context': 'https://schema.org', '@graph': graph }).replace(/</g, '\\u003c');
 ---
 <!doctype html>
@@ -59,6 +69,7 @@ const jsonLd = noindex ? null : JSON.stringify({ '@context': 'https://schema.org
     <meta name="description" content={description} />
     <meta name="robots" content={robots} />
     <meta name="googlebot" content={robots} />
+    {yandexNoindex && <meta name="yandex" content="noindex" />}
     <meta name="author" content={site.ownerName} />
     <meta name="theme-color" content="#07101c" />
     <link rel="canonical" href={canonical} />

@@ -7,7 +7,7 @@ export default defineConfig({
   trailingSlash: 'always',
   integrations: [
     sitemap({
-      filter: (page) => !page.endsWith('/prices/'),
+      filter: (page) => !page.endsWith('/prices/') && !page.endsWith('/project/ai-seo-teacher/video/'),
     }),
   ],
 });
