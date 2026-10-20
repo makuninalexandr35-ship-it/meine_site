@@ -23,10 +23,9 @@ const description = 'Видеообзор AI SEO Teacher: обучение SEO, 
   image={project.cover}
   imageAlt={project.coverAlt}
   ogType="website"
-  yandexNoindex={true}
   breadcrumbs={[{ name: 'Главная', url: site.siteUrl }, { name: 'AI SEO Teacher', url: projectUrl }, { name: 'Видеообзор', url: canonical }]}
   webPageSchema={{ mainEntity: { '@id': videoId } }}
-  additionalSchema={[{ '@type': 'VideoObject', '@id': videoId, name: 'Видеообзор AI SEO Teacher', description: 'Короткий видеообзор интерфейса AI SEO Teacher: обучение, карта знаний и основные возможности платформы.', thumbnailUrl: imageUrl, uploadDate: '2026-10-20', duration: 'PT2M22S', contentUrl: videoUrl, inLanguage: 'ru' }]}
+  additionalSchema={[{ '@type': 'VideoObject', '@id': videoId, name: 'Видеообзор AI SEO Teacher', description: 'Короткий видеообзор интерфейса AI SEO Teacher: обучение, карта знаний и основные возможности платформы.', thumbnailUrl: imageUrl, uploadDate: '2026-10-20T00:00:00+04:00', duration: 'PT2M22S', contentUrl: videoUrl, inLanguage: 'ru' }]}
 >
   <article class="video-case container">
     <a class="back-link" href={projectPath}>← К проекту AI SEO Teacher</a>
