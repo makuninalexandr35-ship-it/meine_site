@@ -1,8 +1,14 @@
 {
+  "/project/ai-seo-teacher/": {
+    "meta_description": "AI SEO Teacher — платформа для изучения SEO, AEO и GEO с искусственным интеллектом, индивидуальной программой и практическими заданиями."
+  },
   "/project/remont-kvartir/": {
     "h1": "Ремонт квартир под ключ"
   },
   "__seo_agent_previous__": {
+    "/project/ai-seo-teacher/": {
+      "meta_description": null
+    },
     "/project/remont-kvartir/": {
       "h1": null
     }
