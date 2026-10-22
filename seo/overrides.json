@@ -2,6 +2,9 @@
   "/": {
     "links_added": {
       "веб-сервисы": "https://aleksandrmakunin.ru/project/ai-seo-teacher/video/"
+    },
+    "sitemap": {
+      "https://aleksandrmakunin.ru/project/ai-seo-teacher/video/": "listed"
     }
   },
   "/project/ai-seo-teacher/": {
@@ -14,6 +17,9 @@
     "/": {
       "links_added": {
         "веб-сервисы": null
+      },
+      "sitemap": {
+        "https://aleksandrmakunin.ru/project/ai-seo-teacher/video/": null
       }
     },
     "/project/ai-seo-teacher/": {
